@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>💕</title>
+    <style>
+        /* ===== RESET & GLOBAL ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width: 100%; height: 100%;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        /* ===== GREEN BACKGROUND WITH LIFE ===== */
+        body {
+            background: linear-gradient(135deg, #0d5e2f, #1a7a42, #27ae60, #2ecc71, #27ae60, #1a7a42);
+            background-size: 500% 500%;
+            animation: greenWave 14s ease infinite;
+        }
+        @keyframes greenWave {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* Bokeh + diagonal stripes overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle 90px at 15% 20%, rgba(255,255,255,0.08), transparent),
+                radial-gradient(circle 120px at 75% 15%, rgba(255,255,255,0.06), transparent),
+                radial-gradient(circle 70px at 50% 65%, rgba(255,255,255,0.07), transparent),
+                radial-gradient(circle 100px at 85% 75%, rgba(255,255,255,0.05), transparent),
+                radial-gradient(circle 60px at 25% 85%, rgba(255,255,255,0.09), transparent),
+                radial-gradient(circle 80px at 40% 40%, rgba(255,255,255,0.04), transparent),
+                repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(255,255,255,0.018) 30px, rgba(255,255,255,0.018) 60px);
+            pointer-events: none;
+            z-index: 0;
+            animation: floatBokeh 18s ease-in-out infinite alternate;
+        }
+        @keyframes floatBokeh {
+            0%   { transform: translate(0, 0) scale(1) rotate(0deg); }
+            100% { transform: translate(25px, -15px) scale(1.06) rotate(1deg); }
+        }
+        /* Pulsing light */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: -50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            animation: greenPulse 6s ease-in-out infinite;
+        }
+        @keyframes greenPulse {
+            0%,100% { transform: scale(0.7); opacity: 0.3; }
+            50%     { transform: scale(1.3); opacity: 0.8; }
+        }
+
+        /* ===== PHONE CONTAINER ===== */
+        #phone-container {
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(80px) scale(0.9);
+            animation: phoneSlideIn 1.4s 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            filter: drop-shadow(0 0 40px rgba(0,0,0,0.25));
+        }
+        @keyframes phoneSlideIn {
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        #phone-container.fade-out {
+            transition: opacity 1.5s ease, transform 1.5s ease;
+            opacity: 0 !important;
+            transform: scale(0.85) !important;
+        }
+
+        /* ===== PHONE HARDWARE ===== */
+        .phone {
+            width: 290px;
+            height: 588px;
+            background: linear-gradient(145deg, #2c2c2e, #1c1c1e);
+            border-radius: 42px;
+            position: relative;
+            box-shadow:
+                inset 0 0 0 1px rgba(255,255,255,0.05),
+                0 0 0 2px #666, 0 0 0 3px #444, 0 0 0 5px #333,
+                0 25px 50px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .phone::before {
+            content: '';
+            position: absolute;
+            left: -4px; top: 100px;
+            width: 3px; height: 28px;
+            background: #555;
+            border-radius: 2px 0 0 2px;
+        }
+        .phone::after {
+            content: '';
+            position: absolute;
+            right: -4px; top: 90px;
+            width: 3px; height: 50px;
+            background: #555;
+            border-radius: 0 2px 2px 0;
+        }
+        .phone-top {
+            height: 62px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .phone-camera {
+            width: 8px; height: 8px;
+            background: radial-gradient(circle, #1a2a4a, #0a1020);
+            border-radius: 50%;
+            border: 1px solid #333;
+            box-shadow: 0 0 3px rgba(26,42,74,0.5);
+        }
+        .phone-speaker {
+            width: 38px; height: 3px;
+            background: #333;
+            border-radius: 2px;
+            box-shadow: inset 0 1px 1px rgba(0,0,0,0.5);
+        }
+        .phone-screen {
+            flex: 1;
+            margin: 0 10px;
+            background: #000;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        .phone-bottom {
+            height: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .home-btn {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            border: 2px solid #555;
+            background: radial-gradient(circle at 40% 35%, #222, #111);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 7px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.25s;
+        }
+        .home-btn:hover { border-color: #999; color: #fff; }
+        .home-btn:active { transform: scale(0.92); }
+        .home-btn.used { cursor: default; color: transparent; }
+
+        /* ===== SCREEN LAYERS ===== */
+        .screen-layer {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .screen-layer.active { opacity: 1; pointer-events: auto; }
+
+        /* --- BOOT --- */
+        #screen-boot {
+            background: #000;
+            align-items: center;
+            justify-content: center;
+        }
+        #screen-boot img {
+            max-width: 65%; max-height: 65%;
+            object-fit: contain;
+            animation: bootGlow 0.8s ease-in;
+        }
+        @keyframes bootGlow {
+            from { opacity: 0; transform: scale(0.7); filter: brightness(2); }
+            to   { opacity: 1; transform: scale(1); filter: brightness(1); }
+        }
+
+        /* --- HOME SCREEN --- */
+        #screen-home {
+            background: linear-gradient(180deg,
+                #070b34 0%, #141852 12%, #2b1a6e 25%,
+                #5c2d91 38%, #9b3fa0 50%, #d4418e 62%,
+                #f06050 74%, #f0944e 84%, #f7c948 94%, #fdd835 100%);
+        }
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 14px;
+            font-size: 9px;
+            font-weight: 600;
+            color: #fff;
+        }
+        .clock-widget {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .clock-time {
+            font-size: 54px;
+            font-weight: 100;
+            color: #fff;
+            text-shadow: 0 2px 20px rgba(0,0,0,0.25);
+            letter-spacing: 2px;
+        }
+        .clock-date {
+            font-size: 12px;
+            color: rgba(255,255,255,0.85);
+            margin-top: 4px;
+        }
+        .apps-area {
+            padding: 20px 0 16px;
+            display: flex;
+            justify-content: center;
+        }
+        .app-wrap {
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+        .app-wrap:active { transform: scale(0.88); }
+        .app-icon {
+            width: 52px; height: 52px;
+            border-radius: 13px;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.35);
+        }
+        .app-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .app-name {
+            font-size: 9px;
+            color: #fff;
+            margin-top: 5px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+            font-weight: 500;
+        }
+
+        /* --- INBOX --- */
+        #screen-inbox { background: #fff; }
+        .inbox-header {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .back-btn {
+            cursor: pointer;
+            font-size: 22px;
+            font-weight: 300;
+            color: #262626;
+            line-height: 1;
+            padding: 0 4px;
+        }
+        .back-btn:active { opacity: 0.4; }
+        .inbox-title { font-size: 17px; font-weight: 700; color: #262626; }
+        .chat-list-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 12px;
+            gap: 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .chat-list-item:active { background: #f0f0f0; }
+        .avatar {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid transparent;
+            background: linear-gradient(#fff,#fff) padding-box,
+                        linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888) border-box;
+        }
+        .chat-meta { flex: 1; }
+        .chat-meta-name { font-size: 13px; font-weight: 600; color: #262626; }
+        .chat-meta-preview { font-size: 12px; color: #8e8e8e; margin-top: 2px; }
+        .unread-dot { width: 9px; height: 9px; background: #0095f6; border-radius: 50%; flex-shrink: 0; }
+
+        /* --- CHAT --- */
+        #screen-chat { background: #fff; }
+        .chat-header {
+            padding: 7px 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+        }
+        .chat-hdr-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
+        .chat-hdr-name { font-size: 13px; font-weight: 600; color: #262626; flex: 1; }
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            scrollbar-width: none;
+        }
+        .messages-area::-webkit-scrollbar { display: none; }
+        .msg {
+            max-width: 80%;
+            padding: 7px 11px;
+            border-radius: 16px;
+            font-size: 11px;
+            line-height: 1.45;
+            word-wrap: break-word;
+            animation: msgPop 0.35s cubic-bezier(0.22,1,0.36,1);
+        }
+        @keyframes msgPop {
+            from { opacity: 0; transform: translateY(8px) scale(0.92); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .msg.recv {
+            background: #efefef; color: #262626;
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+        .msg.sent {
+            background: linear-gradient(135deg,#405de6,#5851db,#833ab4);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+        .msg.typing { background: #efefef; padding: 10px 16px; }
+        .msg.typing .dots span {
+            display: inline-block;
+            width: 6px; height: 6px;
+            background: #999;
+            border-radius: 50%;
+            margin: 0 1px;
+            animation: dotBounce 1.2s infinite;
+        }
+        .msg.typing .dots span:nth-child(2) { animation-delay: 0.15s; }
+        .msg.typing .dots span:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes dotBounce {
+            0%,60%,100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-5px); opacity: 1; }
+        }
+        .gift-msg {
+            align-self: flex-start;
+            cursor: pointer;
+            font-size: 42px;
+            padding: 4px 8px;
+            animation: giftWiggle 0.6s infinite ease-in-out;
+            filter: drop-shadow(0 3px 8px rgba(0,0,0,0.15));
+        }
+        @keyframes giftWiggle {
+            0%,100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.08) rotate(-6deg); }
+            75% { transform: scale(1.08) rotate(6deg); }
+        }
+        .input-bar {
+            display: flex;
+            align-items: center;
+            padding: 4px 8px;
+            gap: 6px;
+            border-top: 1px solid #eee;
+            background: #fff;
+        }
+        .input-bar.hidden { display: none; }
+        .input-field {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 16px;
+            padding: 5px 12px;
+            font-size: 11px;
+            min-height: 26px;
+            background: #fafafa;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            color: #262626;
+        }
+        .input-text { white-space: pre; }
+        .input-cursor {
+            display: inline-block;
+            width: 1.5px; height: 13px;
+            background: #405de6;
+            animation: blink 1s infinite;
+            margin-left: 1px;
+            flex-shrink: 0;
+        }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* ===== KEYBOARD ===== */
+        .keyboard {
+            background: #d1d3d9;
+            padding: 4px 2px 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+        }
+        .keyboard.hidden { display: none; }
+        .kb-row { display: flex; gap: 4px; }
+        .key {
+            min-width: 23px; height: 34px;
+            background: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 0 #8e8e93;
+            color: #000;
+        }
+        .key:active { background: #a8a8ac; transform: scale(0.95); }
+        .key.space { width: 110px; font-size: 10px; color: #888; letter-spacing: 1px; }
+        .key.send {
+            min-width: 42px;
+            background: linear-gradient(135deg,#405de6,#5851db);
+            color: #fff; font-size: 10px; font-weight: 700;
+            box-shadow: 0 1px 0 #333;
+        }
+        .key.send:active { background: #333; }
+        .key.bksp { min-width: 30px; font-size: 16px; }
+
+        /* ===== BEAT SCREEN ===== */
+        #beat-screen {
+            position: fixed; inset: 0;
+            background: linear-gradient(135deg, #0d5e2f, #1a7a42, #27ae60, #2ecc71, #27ae60, #1a7a42);
+            background-size: 500% 500%;
+            animation: greenWave 14s ease infinite;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: background 2.5s ease;
+        }
+        #beat-screen::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle 100px at 20% 30%, rgba(255,255,255,0.07), transparent),
+                radial-gradient(circle 80px at 70% 20%, rgba(255,255,255,0.05), transparent),
+                radial-gradient(circle 90px at 50% 70%, rgba(255,255,255,0.06), transparent),
+                radial-gradient(circle 60px at 80% 80%, rgba(255,255,255,0.08), transparent),
+                repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,0.02) 35px, rgba(255,255,255,0.02) 70px);
+            pointer-events: none;
+            transition: opacity 2s ease;
+        }
+        #beat-screen.to-pink { animation: none !important; }
+        #beat-screen.to-pink::before { opacity: 0; }
+        #beat-screen.active { display: flex; }
+        #beat-img {
+            max-width: 55%; max-height: 55vh;
+            object-fit: contain;
+            transition: opacity 0.5s ease;
+            position: relative;
+            z-index: 2;
+        }
+        .beat-btn {
+            margin-top: 26px;
+            padding: 14px 50px;
+            font-size: 20px; font-weight: 800;
+            background: linear-gradient(135deg, #ff4757, #e84118);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 25px rgba(255,71,87,0.5);
+            transition: transform 0.12s;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            animation: beatGlow 1.5s infinite ease-in-out;
+            position: relative;
+            z-index: 2;
+        }
+        .beat-btn:hover { transform: scale(1.06); }
+        .beat-btn:active { transform: scale(0.92); }
+        @keyframes beatGlow {
+            0%,100% { box-shadow: 0 6px 25px rgba(255,71,87,0.4); }
+            50%     { box-shadow: 0 6px 40px rgba(255,71,87,0.7); }
+        }
+        @keyframes shake {
+            0%,100% { transform: translate(0,0) rotate(0deg); }
+            10% { transform: translate(-10px,5px) rotate(-4deg); }
+            20% { transform: translate(8px,-8px) rotate(3deg); }
+            30% { transform: translate(-6px,3px) rotate(-3deg); }
+            40% { transform: translate(5px,-3px) rotate(2deg); }
+            50% { transform: translate(-3px,2px) rotate(-1deg); }
+        }
+
+        /* ===== FINALE SCREEN ===== */
+        .pink-sky {
+            background: linear-gradient(180deg, #1a0520, #2d0a35, #4a1555, #6b2070, #8a2880) !important;
+        }
+        #finale-screen {
+            position: fixed; inset: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            background: linear-gradient(180deg, #1a0520, #2d0a35, #4a1555, #6b2070, #8a2880);
+            overflow: hidden;
+            transition: opacity 2s ease;
+        }
+        #finale-screen.active { display: flex; }
+        .finale-canvas {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+        }
+        #finale-constellation { z-index: 1; }
+        #finale-particles { z-index: 2; }
+        .finale-images {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        #gaurav-smile {
+            max-width: 230px; max-height: 42vh;
+            object-fit: contain;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            filter: drop-shadow(0 4px 15px rgba(0,0,0,0.3));
+        }
+        #hiba-angel {
+            max-width: 190px; max-height: 38vh;
+            object-fit: contain;
+            opacity: 0;
+            filter: drop-shadow(0 4px 15px rgba(0,0,0,0.3));
+        }
+        .hiba-flying { animation: fairyFly 6s cubic-bezier(0.25,0.46,0.45,0.94) forwards !important; }
+        @keyframes fairyFly {
+            0%   { transform: translate(-100vw,20px) rotate(-15deg); opacity: 0; }
+            6%   { opacity: 1; }
+            14%  { transform: translate(-65vw,-35px) rotate(14deg); }
+            28%  { transform: translate(-40vw,28px) rotate(-12deg); }
+            42%  { transform: translate(-18vw,-22px) rotate(16deg); }
+            56%  { transform: translate(-2vw,18px) rotate(-9deg); }
+            70%  { transform: translate(6vw,-12px) rotate(7deg); }
+            85%  { transform: translate(10vw,6px) rotate(-4deg); }
+            100% { transform: translate(12px,0) rotate(0deg); opacity: 1; }
+        }
+        .finale-text {
+            position: relative;
+            z-index: 3;
+            color: #fff;
+            font-size: 18px; font-weight: 700;
+            text-align: center;
+            text-shadow: 0 2px 15px rgba(0,0,0,0.4), 0 0 40px rgba(255,150,200,0.3);
+            max-width: 85%;
+            margin-top: 24px;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            line-height: 1.6;
+        }
+
+        /* ===== RAINBOW SCREEN ===== */
+        #rainbow-screen {
+            position: fixed; inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            background: linear-gradient(180deg, #1a0520, #2d0a35, #4a1555, #6b2070, #8a2880);
+            overflow: hidden;
+        }
+        #rainbow-screen.active { display: flex; }
+        .rainbow-canvas {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+        }
+        #rainbow-constellation { z-index: 1; }
+        #rainbow-particles { z-index: 2; }
+        #rainbow-img {
+            max-width: 88%; max-height: 88vh;
+            object-fit: contain;
+            position: relative;
+            z-index: 3;
+            opacity: 0;
+            transform: scale(0.15);
+            transition: all 3s cubic-bezier(0.22,1,0.36,1);
+            filter: drop-shadow(0 8px 30px rgba(0,0,0,0.3));
+        }
+        #rainbow-img.show { opacity: 1; transform: scale(1); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-height: 660px) {
+            .phone { transform: scale(0.82); transform-origin: center; }
+        }
+        @media (max-height: 540px) {
+            .phone { transform: scale(0.68); transform-origin: center; }
+        }
+        @media (max-width: 320px) {
+            .phone { transform: scale(0.85); transform-origin: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== PHONE ==================== -->
+    <div id="phone-container">
+        <div class="phone">
+            <div class="phone-top">
+                <div class="phone-camera"></div>
+                <div class="phone-speaker"></div>
+            </div>
+            <div class="phone-screen">
+                <div class="screen-layer" id="screen-boot">
+                    <img src="assets/android.png" alt="">
+                </div>
+                <div class="screen-layer" id="screen-home">
+                    <div class="status-bar">
+                        <span id="status-time">9:41</span>
+                        <span>📶 🔋</span>
+                    </div>
+                    <div class="clock-widget">
+                        <div class="clock-time" id="home-clock">9:41</div>
+                        <div class="clock-date" id="home-date">Saturday, November 7</div>
+                    </div>
+                    <div class="apps-area">
+                        <div class="app-wrap" id="app-himstagram">
+                            <div class="app-icon"><img src="assets/himstagram.png" alt=""></div>
+                            <div class="app-name">Himstagram</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="screen-layer" id="screen-inbox">
+                    <div class="inbox-header">
+                        <span class="back-btn" id="inbox-back">‹</span>
+                        <span class="inbox-title">Direct</span>
+                    </div>
+                    <div class="chat-list-item" id="chat-entry">
+                        <img src="assets/profile.png" class="avatar" alt="">
+                        <div class="chat-meta">
+                            <div class="chat-meta-name">Gaurav 💜</div>
+                            <div class="chat-meta-preview">Sent a message</div>
+                        </div>
+                        <div class="unread-dot"></div>
+                    </div>
+                </div>
+                <div class="screen-layer" id="screen-chat">
+                    <div class="chat-header">
+                        <span class="back-btn" id="chat-back">‹</span>
+                        <img src="assets/profile.png" class="chat-hdr-avatar" alt="">
+                        <span class="chat-hdr-name">Gaurav 💜</span>
+                    </div>
+                    <div class="messages-area" id="messages"></div>
+                    <div class="input-bar" id="input-bar">
+                        <div class="input-field">
+                            <span class="input-text" id="input-text"></span>
+                            <span class="input-cursor"></span>
+                        </div>
+                    </div>
+                    <div class="keyboard" id="keyboard">
+                        <div class="kb-row">
+                            <button class="key" data-c="q">q</button>
+                            <button class="key" data-c="w">w</button>
+                            <button class="key" data-c="e">e</button>
+                            <button class="key" data-c="r">r</button>
+                            <button class="key" data-c="t">t</button>
+                            <button class="key" data-c="y">y</button>
+                            <button class="key" data-c="u">u</button>
+                            <button class="key" data-c="i">i</button>
+                            <button class="key" data-c="o">o</button>
+                            <button class="key" data-c="p">p</button>
+                        </div>
+                        <div class="kb-row">
+                            <button class="key" data-c="a">a</button>
+                            <button class="key" data-c="s">s</button>
+                            <button class="key" data-c="d">d</button>
+                            <button class="key" data-c="f">f</button>
+                            <button class="key" data-c="g">g</button>
+                            <button class="key" data-c="h">h</button>
+                            <button class="key" data-c="j">j</button>
+                            <button class="key" data-c="k">k</button>
+                            <button class="key" data-c="l">l</button>
+                        </div>
+                        <div class="kb-row">
+                            <button class="key" data-c="z">z</button>
+                            <button class="key" data-c="x">x</button>
+                            <button class="key" data-c="c">c</button>
+                            <button class="key" data-c="v">v</button>
+                            <button class="key" data-c="b">b</button>
+                            <button class="key" data-c="n">n</button>
+                            <button class="key" data-c="m">m</button>
+                            <button class="key bksp" id="key-bksp">⌫</button>
+                        </div>
+                        <div class="kb-row">
+                            <button class="key space" data-c=" ">space</button>
+                            <button class="key send" id="key-send">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="phone-bottom">
+                <div class="home-btn" id="home-btn">Turn on</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== BEAT SCREEN ==================== -->
+    <div id="beat-screen">
+        <img id="beat-img" src="" alt="">
+        <button class="beat-btn" id="beat-btn">Beat 👊</button>
+    </div>
+
+    <!-- ==================== FINALE SCREEN ==================== -->
+    <div id="finale-screen">
+        <canvas id="finale-constellation" class="finale-canvas"></canvas>
+        <canvas id="finale-particles" class="finale-canvas"></canvas>
+        <div class="finale-images" id="finale-images">
+            <img id="gaurav-smile" src="assets/gauravsmiling.png" alt="">
+            <img id="hiba-angel" src="assets/hibatheangel.png" alt="">
+        </div>
+        <div class="finale-text" id="finale-text">
+            you can't beat me anymore<br>my cuteee bibaaa will save me 💕
+        </div>
+    </div>
+
+    <!-- ==================== RAINBOW SCREEN ==================== -->
+    <div id="rainbow-screen">
+        <canvas id="rainbow-constellation" class="rainbow-canvas"></canvas>
+        <canvas id="rainbow-particles" class="rainbow-canvas"></canvas>
+        <img id="rainbow-img" src="assets/rainbowbite.jpg" alt="">
+    </div>
+
+    <!-- Audio -->
+    <audio id="audio-bonk" src="assets/bonk.mp3" preload="auto"></audio>
+    <audio id="audio-music" src="assets/lastchristmas.mp3" preload="auto"></audio>
+
+<script>
+// ================================================================
+//  PRELOAD
+// ================================================================
+['android.png','himstagram.png','profile.png',
+ 'gauravtakis.png','gauravtakisbeat.png','gauravemotional.png','gauravemotionalbeat.png',
+ 'gauravcry.png','gauravcrybeat.png','gauravslim.png','gauravslimbeat.png',
+ 'gauravtensed.png','gauravtensedbeat.png','gauravsmiling.png','hibatheangel.png','rainbowbite.jpg'
+].forEach(s => { const i = new Image(); i.src = 'assets/' + s; });
+
+// ================================================================
+//  STATE & REFS
+// ================================================================
+let chatState = 'WAITING';
+let inputText = '';
+let canType   = false;
+let beatIndex = 0;
+let chatOpened = false;
+
+const beatSeq = [
+    { img: 'gauravtakis.png',    hit: 'gauravtakisbeat.png' },
+    { img: 'gauravemotional.png', hit: 'gauravemotionalbeat.png' },
+    { img: 'gauravcry.png',      hit: 'gauravcrybeat.png' },
+    { img: 'gauravslim.png',     hit: 'gauravslimbeat.png' },
+    { img: 'gauravtensed.png',   hit: 'gauravtensedbeat.png' },
+];
+
+const $ = id => document.getElementById(id);
+const messagesEl  = $('messages');
+const inputTextEl = $('input-text');
+const bonkAudio   = $('audio-bonk');
+const musicAudio  = $('audio-music');
+
+// ================================================================
+//  SCREEN MANAGEMENT
+// ================================================================
+function showLayer(id) {
+    document.querySelectorAll('.screen-layer').forEach(l => l.classList.remove('active'));
+    $(id).classList.add('active');
+}
+
+// ================================================================
+//  BOOT SEQUENCE
+// ================================================================
+$('home-btn').addEventListener('click', function() {
+    if (this.classList.contains('used')) return;
+    this.classList.add('used');
+    this.textContent = '⬜';
+    this.style.fontSize = '4px';
+    this.style.color = '#555';
+    showLayer('screen-boot');
+    setTimeout(() => {
+        const now = new Date();
+        const h = now.getHours() % 12 || 12;
+        const m = String(now.getMinutes()).padStart(2, '0');
+        const t = h + ':' + m;
+        $('home-clock').textContent = t;
+        $('status-time').textContent = t;
+        const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        $('home-date').textContent = days[now.getDay()] + ', ' + months[now.getMonth()] + ' ' + now.getDate();
+        showLayer('screen-home');
+    }, 2000);
+});
+
+// ================================================================
+//  NAVIGATION
+// ================================================================
+$('app-himstagram').addEventListener('click', () => showLayer('screen-inbox'));
+$('inbox-back').addEventListener('click', () => showLayer('screen-home'));
+$('chat-back').addEventListener('click', () => showLayer('screen-inbox'));
+
+$('chat-entry').addEventListener('click', () => {
+    showLayer('screen-chat');
+    if (!chatOpened) {
+        chatOpened = true;
+        chatState = 'FIRST';
+        canType = false;
+        setTimeout(() => {
+            addBotMsg('bibaaaaaaa are you angry on me 🥺', () => { canType = true; });
+        }, 700);
+    }
+});
+
+// ================================================================
+//  CHAT MESSAGES
+// ================================================================
+function addBotMsg(text, cb) {
+    const typing = document.createElement('div');
+    typing.className = 'msg recv typing';
+    typing.innerHTML = '<span class="dots"><span></span><span></span><span></span></span>';
+    messagesEl.appendChild(typing);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    setTimeout(() => {
+        typing.classList.remove('typing');
+        typing.innerHTML = '';
+        typing.textContent = text;
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+        if (cb) cb();
+    }, 900);
+}
+
+function addUserMsg(text) {
+    const el = document.createElement('div');
+    el.className = 'msg sent';
+    el.textContent = text;
+    messagesEl.appendChild(el);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function showGiftBox() {
+    addBotMsg('tap on it 👇', () => {
+        setTimeout(() => {
+            const g = document.createElement('div');
+            g.className = 'gift-msg';
+            g.textContent = '🎁';
+            g.addEventListener('click', onGiftTap);
+            messagesEl.appendChild(g);
+            messagesEl.scrollTop = messagesEl.scrollHeight;
+        }, 600);
+    });
+}
+
+// ================================================================
+//  CHAT LOGIC  (no 😏 — only 🥺 emoji)
+// ================================================================
+const YES_RE = /\b(y+e+s+|y+a+h*|haa+n?|ok+a?y?|sure|yep|yup|haa?n|hmm)\b/i;
+const TALK_RE = /(don'?t|dont|nahi|nhi|mat|nai).*(talk|baat|bat)|(talk|baat|bat).*(nahi|nhi|no|mat|nai)/i;
+
+function processReply(text) {
+    const t = text.toLowerCase().trim();
+    canType = false;
+
+    if (chatState === 'FIRST') {
+        if (TALK_RE.test(t)) {
+            addBotMsg('i wanna talk 🥺', () => {
+                setTimeout(() => {
+                    chatState = 'BEAT_ASK';
+                    addBotMsg('do you wanna beat me?', () => { canType = true; });
+                }, 900);
+            });
+        } else if (YES_RE.test(t)) {
+            chatState = 'BEAT_ASK';
+            addBotMsg('do you wanna beat me?', () => { canType = true; });
+        } else {
+            addBotMsg('i know youre still angry on me sweetie 🥺', () => {
+                setTimeout(() => {
+                    chatState = 'BEAT_ASK';
+                    addBotMsg('do you wanna beat me?', () => { canType = true; });
+                }, 900);
+            });
+        }
+    } else if (chatState === 'BEAT_ASK') {
+        if (YES_RE.test(t)) {
+            chatState = 'DONE';
+            $('keyboard').classList.add('hidden');
+            $('input-bar').classList.add('hidden');
+            setTimeout(() => showGiftBox(), 500);
+        } else {
+            addBotMsg('pleaseee say yesss 🥺', () => { canType = true; });
+        }
+    } else if (chatState === 'FORGIVE') {
+        if (YES_RE.test(t)) {
+            chatState = 'ALL_DONE';
+            canType = false;
+            $('keyboard').classList.add('hidden');
+            $('input-bar').classList.add('hidden');
+            addBotMsg('yayyyyyyyyyyyyyyyy 😊', () => {});
+        } else {
+            addBotMsg('pleaseee forgive me 🥺', () => { canType = true; });
+        }
+    }
+}
+
+// ================================================================
+//  KEYBOARD
+// ================================================================
+document.querySelectorAll('.key[data-c]').forEach(k => {
+    k.addEventListener('click', e => {
+        e.preventDefault();
+        if (!canType) return;
+        inputText += k.dataset.c;
+        inputTextEl.textContent = inputText;
+    });
+});
+$('key-bksp').addEventListener('click', e => {
+    e.preventDefault();
+    if (!canType) return;
+    inputText = inputText.slice(0, -1);
+    inputTextEl.textContent = inputText;
+});
+$('key-send').addEventListener('click', e => { e.preventDefault(); sendMsg(); });
+
+function sendMsg() {
+    if (!canType || !inputText.trim()) return;
+    const txt = inputText.trim();
+    inputText = '';
+    inputTextEl.textContent = '';
+    addUserMsg(txt);
+    processReply(txt);
+}
+
+// ================================================================
+//  GIFT → BEAT
+// ================================================================
+function onGiftTap() {
+    $('phone-container').classList.add('fade-out');
+    setTimeout(() => {
+        $('phone-container').style.display = 'none';
+        startBeatSequence();
+    }, 1600);
+}
+
+function startBeatSequence() {
+    beatIndex = 0;
+    $('beat-screen').classList.add('active');
+    showBeatImg();
+}
+
+function showBeatImg() {
+    const img = $('beat-img');
+    img.style.opacity = '0';
+    img.style.animation = 'none';
+    setTimeout(() => {
+        img.src = 'assets/' + beatSeq[beatIndex].img;
+        img.onload = () => { img.style.opacity = '1'; $('beat-btn').style.display = ''; };
+    }, 400);
+}
+
+$('beat-btn').addEventListener('click', doBeat);
+
+function doBeat() {
+    bonkAudio.currentTime = 0;
+    bonkAudio.play().catch(() => {});
+    const img = $('beat-img');
+    img.src = 'assets/' + beatSeq[beatIndex].hit;
+    $('beat-btn').style.display = 'none';
+    img.style.animation = 'none';
+    img.offsetHeight;
+    img.style.animation = 'shake 0.4s ease';
+    setTimeout(() => {
+        img.style.opacity = '0';
+        setTimeout(() => {
+            beatIndex++;
+            if (beatIndex < beatSeq.length) showBeatImg();
+            else startFinale();
+        }, 500);
+    }, 1500);
+}
+
+// ================================================================
+//  FINALE
+// ================================================================
+function startFinale() {
+    $('beat-img').style.display = 'none';
+    $('beat-btn').style.display = 'none';
+
+    // Green → pink sky transition
+    $('beat-screen').classList.add('to-pink');
+    $('beat-screen').style.background = 'linear-gradient(180deg, #1a0520, #2d0a35, #4a1555, #6b2070, #8a2880)';
+    $('beat-screen').style.backgroundSize = '100% 100%';
+
+    musicAudio.volume = 0.7;
+    musicAudio.play().catch(() => {});
+
+    setTimeout(() => {
+        $('beat-screen').classList.remove('active');
+        $('finale-screen').classList.add('active');
+
+        startConstellation($('finale-constellation'));
+        startEmojiParticles($('finale-particles'));
+
+        setTimeout(() => { $('gaurav-smile').style.opacity = '1'; }, 800);
+        setTimeout(() => { $('hiba-angel').classList.add('hiba-flying'); }, 2500);
+        setTimeout(() => { $('finale-text').style.opacity = '1'; }, 6000);
+
+        setTimeout(() => {
+            $('finale-screen').style.opacity = '0';
+            setTimeout(() => {
+                $('finale-screen').classList.remove('active');
+                showRainbow();
+            }, 2200);
+        }, 13000);
+    }, 2800);
+}
+
+// ================================================================
+//  RAINBOW
+// ================================================================
+function showRainbow() {
+    $('rainbow-screen').classList.add('active');
+    startConstellation($('rainbow-constellation'));
+    startFlowerBurst($('rainbow-particles'));
+    setTimeout(() => { $('rainbow-img').classList.add('show'); }, 800);
+
+    // After 10 seconds → phone reappears for forgiveness
+    setTimeout(() => phoneReappearForForgive(), 10000);
+}
+
+// ================================================================
+//  PHONE REAPPEAR (FORGIVENESS)
+// ================================================================
+function phoneReappearForForgive() {
+    // Prepare chat
+    messagesEl.innerHTML = '';
+    $('input-bar').classList.remove('hidden');
+    $('keyboard').classList.remove('hidden');
+    showLayer('screen-chat');
+    chatState = 'FORGIVE';
+    canType = false;
+    inputText = '';
+    inputTextEl.textContent = '';
+
+    // Show phone above everything
+    const pc = $('phone-container');
+    pc.style.display = '';
+    pc.style.zIndex = '400';
+    pc.classList.remove('fade-out');
+    pc.style.animation = 'none';
+    pc.style.opacity = '0';
+    pc.style.transform = 'translateY(60px) scale(0.9)';
+    pc.offsetHeight;
+    pc.style.transition = 'opacity 1.5s ease, transform 1.5s ease';
+    pc.style.opacity = '1';
+    pc.style.transform = 'translateY(0) scale(1)';
+
+    setTimeout(() => {
+        addBotMsg('you forgave me sweetie? 🥺', () => { canType = true; });
+    }, 2000);
+}
+
+// ================================================================
+//  CONSTELLATION EFFECT (pink sky with stars & lines)
+// ================================================================
+function startConstellation(canvas) {
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const stars = [];
+    for (let i = 0; i < 110; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.25,
+            vy: (Math.random() - 0.5) * 0.25,
+            size: Math.random() * 2 + 0.8,
+            twinkle: Math.random() * Math.PI * 2,
+            speed: Math.random() * 0.025 + 0.01,
+            bright: Math.random() > 0.85,
+        });
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const maxDist = 110;
+
+        // Lines
+        for (let i = 0; i < stars.length; i++) {
+            for (let j = i + 1; j < stars.length; j++) {
+                const dx = stars[i].x - stars[j].x;
+                const dy = stars[i].y - stars[j].y;
+                const d = Math.sqrt(dx * dx + dy * dy);
+                if (d < maxDist) {
+                    ctx.beginPath();
+                    ctx.moveTo(stars[i].x, stars[i].y);
+                    ctx.lineTo(stars[j].x, stars[j].y);
+                    ctx.strokeStyle = 'rgba(255,200,230,' + ((1 - d / maxDist) * 0.2) + ')';
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                }
+            }
+        }
+
+        // Stars
+        stars.forEach(s => {
+            s.twinkle += s.speed;
+            const a = 0.5 + Math.sin(s.twinkle) * 0.35;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(255,230,245,' + a + ')';
+            ctx.fill();
+            if (s.bright) {
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size * 4, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255,180,220,' + (a * 0.12) + ')';
+                ctx.fill();
+            }
+            s.x += s.vx;
+            s.y += s.vy;
+            if (s.x < -5) s.x = canvas.width + 5;
+            if (s.x > canvas.width + 5) s.x = -5;
+            if (s.y < -5) s.y = canvas.height + 5;
+            if (s.y > canvas.height + 5) s.y = -5;
+        });
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+// ================================================================
+//  EMOJI PARTICLES (finale)
+// ================================================================
+function startEmojiParticles(canvas) {
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const emojis = ['✨','⭐','🌟','💖','💕','💗','🌸','💫','🦋','🎀'];
+    const particles = [];
+    for (let i = 0; i < 50; i++) {
+        particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 1.2,
+            vy: -(Math.random() * 1.5 + 0.4),
+            size: Math.random() * 16 + 10,
+            emoji: emojis[Math.floor(Math.random() * emojis.length)],
+            alpha: Math.random() * 0.5 + 0.5,
+            wobble: Math.random() * Math.PI * 2,
+            ws: Math.random() * 0.02 + 0.01,
+        });
+    }
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+            p.wobble += p.ws;
+            ctx.globalAlpha = p.alpha;
+            ctx.font = p.size + 'px serif';
+            ctx.fillText(p.emoji, p.x + Math.sin(p.wobble) * 15, p.y);
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.y < -30) { p.y = canvas.height + 30; p.x = Math.random() * canvas.width; }
+            if (p.x < -30) p.x = canvas.width + 30;
+            if (p.x > canvas.width + 30) p.x = -30;
+        });
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+
+// ================================================================
+//  FLOWER BURST (rainbow — FAST)
+// ================================================================
+function startFlowerBurst(canvas) {
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const emojis = ['🌸','🌺','🌷','💐','🌹','✨','⭐','🌟','💫','💖','🦋','🎀','💕','🌻','🌼','🎆','🎇'];
+    const particles = [];
+
+    function spawn() {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 4.5 + 2;
+        return {
+            x: canvas.width / 2 + (Math.random() - 0.5) * 50,
+            y: canvas.height / 2 + (Math.random() - 0.5) * 50,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            size: Math.random() * 22 + 14,
+            emoji: emojis[Math.floor(Math.random() * emojis.length)],
+            rot: 0,
+            spin: (Math.random() - 0.5) * 0.08,
+        };
+    }
+    for (let i = 0; i < 120; i++) particles.push(spawn());
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach((p, idx) => {
+            p.rot += p.spin;
+            ctx.globalAlpha = 0.9;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.font = p.size + 'px serif';
+            ctx.fillText(p.emoji, 0, 0);
+            ctx.restore();
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < -60 || p.x > canvas.width + 60 || p.y < -60 || p.y > canvas.height + 60) {
+                particles[idx] = spawn();
+            }
+        });
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(draw);
+    }
+    draw();
+}
+</script>
+</body>
+</html>
