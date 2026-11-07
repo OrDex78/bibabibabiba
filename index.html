@@ -628,7 +628,7 @@
             </div>
             <div class="phone-screen">
                 <div class="screen-layer" id="screen-boot">
-                    <img src="assets/android.png" alt="">
+                    <img src="android.png" onerror="if(!this.dataset.t){this.dataset.t=1;this.src='assets/android.png';}" alt="">
                 </div>
                 <div class="screen-layer" id="screen-home">
                     <div class="status-bar">
@@ -641,7 +641,7 @@
                     </div>
                     <div class="apps-area">
                         <div class="app-wrap" id="app-himstagram">
-                            <div class="app-icon"><img src="assets/himstagram.png" alt=""></div>
+                            <div class="app-icon"><img src="himstagram.png" onerror="if(!this.dataset.t){this.dataset.t=1;this.src='assets/himstagram.png';}" alt=""></div>
                             <div class="app-name">Himstagram</div>
                         </div>
                     </div>
@@ -652,7 +652,7 @@
                         <span class="inbox-title">Direct</span>
                     </div>
                     <div class="chat-list-item" id="chat-entry">
-                        <img src="assets/profile.png" class="avatar" alt="">
+                        <img src="profile.png" onerror="if(!this.dataset.t){this.dataset.t=1;this.src='assets/profile.png';}" class="avatar" alt="">
                         <div class="chat-meta">
                             <div class="chat-meta-name">Gaurav 💜</div>
                             <div class="chat-meta-preview">Sent a message</div>
@@ -663,7 +663,7 @@
                 <div class="screen-layer" id="screen-chat">
                     <div class="chat-header">
                         <span class="back-btn" id="chat-back">‹</span>
-                        <img src="assets/profile.png" class="chat-hdr-avatar" alt="">
+                        <img src="profile.png" onerror="if(!this.dataset.t){this.dataset.t=1;this.src='assets/profile.png';}" class="chat-hdr-avatar" alt="">
                         <span class="chat-hdr-name">Gaurav 💜</span>
                     </div>
                     <div class="messages-area" id="messages"></div>
@@ -731,8 +731,8 @@
         <canvas id="finale-constellation" class="finale-canvas"></canvas>
         <canvas id="finale-particles" class="finale-canvas"></canvas>
         <div class="finale-images" id="finale-images">
-            <img id="gaurav-smile" src="assets/gauravsmiling.png" alt="">
-            <img id="hiba-angel" src="assets/hibatheangel.png" alt="">
+            <img id="gaurav-smile" src="gauravsmiling.png" onerror="if(!this.dataset.t){this.dataset.t=1;this.src='assets/gauravsmiling.png';}" alt="">
+            <img id="hiba-angel" src="hibatheangel.png" onerror="if(!this.dataset.t){this.dataset.t=1;this.src='assets/hibatheangel.png';}" alt="">
         </div>
         <div class="finale-text" id="finale-text">
             you can't beat me anymore<br>my cuteee bibaaa will save me 💕
@@ -743,22 +743,50 @@
     <div id="rainbow-screen">
         <canvas id="rainbow-constellation" class="rainbow-canvas"></canvas>
         <canvas id="rainbow-particles" class="rainbow-canvas"></canvas>
-        <img id="rainbow-img" src="assets/rainbowbite.jpg" alt="">
+        <img id="rainbow-img" src="rainbowbite.jpg" onerror="if(!this.dataset.t){this.dataset.t=1;this.src='assets/rainbowbite.jpg';}" alt="">
     </div>
 
     <!-- Audio -->
-    <audio id="audio-bonk" src="assets/bonk.mp3" preload="auto"></audio>
-    <audio id="audio-music" src="assets/lastchristmas.mp3" preload="auto"></audio>
+    <audio id="audio-bonk" preload="auto">
+        <source src="bonk.mp3" type="audio/mpeg">
+        <source src="assets/bonk.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="audio-music" preload="auto">
+        <source src="lastchristmas.mp3" type="audio/mpeg">
+        <source src="assets/lastchristmas.mp3" type="audio/mpeg">
+    </audio>
 
 <script>
 // ================================================================
-//  PRELOAD
+//  ASSET PATH RESOLVER & PRELOAD
 // ================================================================
+let assetPrefix = '';
+const probe = new Image();
+probe.onload = () => { assetPrefix = ''; };
+probe.onerror = () => {
+    assetPrefix = 'assets/';
+    document.querySelectorAll('img').forEach(el => {
+        const s = el.getAttribute('src');
+        if (s && !s.startsWith('assets/') && !s.startsWith('http') && !s.startsWith('data:')) {
+            el.src = 'assets/' + s;
+        }
+    });
+};
+probe.src = 'android.png';
+
+function assetUrl(name) {
+    return assetPrefix + name;
+}
+
 ['android.png','himstagram.png','profile.png',
  'gauravtakis.png','gauravtakisbeat.png','gauravemotional.png','gauravemotionalbeat.png',
  'gauravcry.png','gauravcrybeat.png','gauravslim.png','gauravslimbeat.png',
  'gauravtensed.png','gauravtensedbeat.png','gauravsmiling.png','hibatheangel.png','rainbowbite.jpg'
-].forEach(s => { const i = new Image(); i.src = 'assets/' + s; });
+].forEach(s => {
+    const i = new Image();
+    i.onerror = () => { i.src = 'assets/' + s; };
+    i.src = s;
+});
 
 // ================================================================
 //  STATE & REFS
@@ -973,9 +1001,20 @@ function showBeatImg() {
     const img = $('beat-img');
     img.style.opacity = '0';
     img.style.animation = 'none';
+    const filename = beatSeq[beatIndex].img;
     setTimeout(() => {
-        img.src = 'assets/' + beatSeq[beatIndex].img;
-        img.onload = () => { img.style.opacity = '1'; $('beat-btn').style.display = ''; };
+        img.onerror = () => {
+            if (!img.dataset.altTried) {
+                img.dataset.altTried = '1';
+                img.src = 'assets/' + filename;
+            }
+        };
+        img.onload = () => {
+            img.removeAttribute('data-altTried');
+            img.style.opacity = '1';
+            $('beat-btn').style.display = '';
+        };
+        img.src = assetUrl(filename);
     }, 400);
 }
 
@@ -985,7 +1024,14 @@ function doBeat() {
     bonkAudio.currentTime = 0;
     bonkAudio.play().catch(() => {});
     const img = $('beat-img');
-    img.src = 'assets/' + beatSeq[beatIndex].hit;
+    const hitFilename = beatSeq[beatIndex].hit;
+    img.onerror = () => {
+        if (!img.dataset.altHitTried) {
+            img.dataset.altHitTried = '1';
+            img.src = 'assets/' + hitFilename;
+        }
+    };
+    img.src = assetUrl(hitFilename);
     $('beat-btn').style.display = 'none';
     img.style.animation = 'none';
     img.offsetHeight;
